@@ -17,11 +17,17 @@ else {
 
 choco feature enable -n allowGlobalConfirmation
 
-Write-Host "Install gsudo. (gsudo acts like sudo command for linux i.e. it gives admin privilege to your commands)" -ForegroundColor Green
-choco install gsudo
+gsudo -v
+if (echo $? -eq True) {
+    Write-Host "gsudo already installed. Skipping gsudo installation." -ForegroundColor Green
+}
+else {
+    Write-Host "Install gsudo. (gsudo acts like sudo command for linux i.e. it gives admin privilege to your commands)" -ForegroundColor Green
+    choco install gsudo
+}
 
-Write-Host "Installing Git, Visual Studio Build Tools, Microsft Windows Terminal, Visual Studio Code, Notepad++" -ForegroundColor Green
-gsudo choco install git visualstudio2019buildtools microsoft-windows-terminal vscode notepadplusplus.Install
+Write-Host "Installing Git, Github Desktop, Visual Studio Build Tools, Microsft Windows Terminal, Visual Studio Code, Notepad++" -ForegroundColor Green
+gsudo choco install git github-desktop visualstudio2019buildtools microsoft-windows-terminal vscode notepadplusplus.Install
 
 git clone https://github.com/kerol2r20/Windows-terminal-context-menu
 cd Windows-terminal-context-menu
@@ -41,6 +47,7 @@ $react = Read-Host -Prompt "React Scripts"
 $yarn = Read-Host -Prompt "Yarn Package Manager"
 # $mysql = Read-Host -Prompt "MySQL Server & Workbench"
 $wamp = Read-Host -Prompt "WAMP server"
+$visualStudio = Read-Host -Prompt "Visual Studio 2019 Community"
 
 
 if ($node -eq 'y') {
@@ -59,7 +66,7 @@ if ($node -eq 'y') {
 
 if ($wamp -eq 'y') {
     Write-Output "Installing WAMP Server"
-    choco install wamp-server -Wait
+    choco install wamp-server --ignore-checksums -Wait 
 }
 
 if ($yarn -eq 'y') {
@@ -100,4 +107,9 @@ if ($react -eq 'y') {
     }
     Write-Output "Installing React Scripts globally"
     npm install -g react-scripts
+}
+
+if ($visualStudio -eq 'y') {
+    Write-Output "Installing Visual Studio 2019 Community"
+    choco install visualstudio2019community
 }
