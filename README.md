@@ -19,6 +19,7 @@ Now navigate to the repository and run `.\windows.install.ps1`.
 * Visual Studio Code
 * Notepad++
 * Github Desktop
+* Google Chrome
 
 # Optional Tools
 * NodeJS
