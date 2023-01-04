@@ -57,3 +57,5 @@ brew install procs
 brew install httpie
 brew install ncdu
 brew install duf
+
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
