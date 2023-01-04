@@ -11,6 +11,7 @@ catch {
     [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
     iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
+    $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
     Write-Host "Chocolatey Version" (choco --version) -ForegroundColor Green
     
 }
@@ -29,8 +30,8 @@ catch {
 Write-Host "Updating ENVs" -ForegroundColor Green
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
 
-Write-Host "Installing Google Chrome, Git, Github Desktop, Visual Studio Build Tools, Microsft Windows Terminal, Visual Studio Code, Notepad++" -ForegroundColor Green
-gsudo choco install googlechrome git github-desktop visualstudio2019buildtools microsoft-windows-terminal vscode notepadplusplus
+Write-Host "Installing Google Chrome, Git, Microsft Windows Terminal, Notepad++" -ForegroundColor Green
+gsudo choco install googlechrome git  microsoft-windows-terminal notepadplusplus
 
 
 Write-Host "Updating ENVs" -ForegroundColor Green
@@ -48,16 +49,37 @@ Write-Host "To Install Windows Subsystem for Linux (WSL), please read Install Wi
 
 Write-Host "Please type y or n to choose softwares/tools you want to install on your device. Type q to quit." -ForegroundColor Green
 
+Write-Host "Select Text editors you want to keep on your system. Type and enter y or n." -ForegroundColor Green
+$vscode = Read-Host -Prompt "Visual Studio Code"
+$sublime = Read-Host -Prompt "Sublime Text"
 
+Write-Host "Select servers you want to keep on your system. Type and enter y or n." -ForegroundColor Green
 $node = Read-Host -Prompt "NodeJS"
+$wamp = Read-Host -Prompt "WAMP server"
+
+Write-Host "Select databases you want to keep on your system. Type and enter y or n." -ForegroundColor Green
+# $mysql = Read-Host -Prompt "MySQL Server & Workbench"
+$maria = Read-Host -Prompt "Maria DB"
+$postgres = Read-Host -Prompt "postgres SQL"
+
+Write-Host "Select other tools you want to keep on your system. Type and enter y or n." -ForegroundColor Green
+$gitHubDesktop = Read-Host -Prompt "Github Desktop"
 $react = Read-Host -Prompt "React Scripts"
 $yarn = Read-Host -Prompt "Yarn Package Manager"
-# $mysql = Read-Host -Prompt "MySQL Server & Workbench"
-$wamp = Read-Host -Prompt "WAMP server"
 $visualStudio = Read-Host -Prompt "Visual Studio 2019 Community"
 $postman = Read-Host -Prompt "Postman"
 
+# Text Editors
+if ($vscode -eq 'y'){
+    choco install visualstudio2019buildtools vscode
+}
 
+if ($sublime -eq 'y'){
+    choco install sublimetext3
+}
+
+
+# Servers
 if ($node -eq 'y') {
     try {
         Write-Output "Checking NodeJS"
@@ -74,6 +96,30 @@ if ($wamp -eq 'y') {
     choco install wamp-server --ignore-checksums -Wait 
 }
 
+# Databases
+# if ($mysql -eq 'y') {
+#     Write-Output "Installing MySQL Server"
+#     choco install mysql -Wait
+
+#     Write-Output "Installing MySQL Workbench"
+#     choco install mysql.workbench -Wait
+# }
+
+if ($maria -eq 'y') {
+    Write-Output "Installing Maria DB"
+    choco install mariadb
+}
+if ($postgres -eq 'y') {
+    Write-Output "Installing Postgre SQL"
+    choco install postgresql
+}
+
+
+# Other Tools
+if ($gitHubDesktop -eq 'y') {
+    choco install github-desktop
+}
+
 if ($yarn -eq 'y') {
     try {
         Write-Output "Checking Yarn Package Manager"
@@ -85,14 +131,6 @@ if ($yarn -eq 'y') {
         choco install yarn
     }
 }
-
-# if ($mysql -eq 'y') {
-#     Write-Output "Installing MySQL Server"
-#     choco install mysql -Wait
-
-#     Write-Output "Installing MySQL Workbench"
-#     choco install mysql.workbench -Wait
-# }
 
 
 if ($react -eq 'y') {
